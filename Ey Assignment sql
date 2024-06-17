@@ -1,0 +1,19 @@
+#1
+select f.flight_id, f.from_location, f.to_location, d.price 
+from air_flight f,air_flight_details d 
+where f.flight_id = d.flight_id and month(d.flight_departure_date)=4;
+ 
+#2
+select f.flight_id, f.from_location, f.to_location, avg(d.price) as price 
+from air_flight f,air_flight_details d 
+where f.flight_id = d.flight_id group by flight_departure_date, flight_id
+order by flight_id, from_location, to_location;
+
+#3
+ select p.profile_id, concat(p.first_name,',', p.last_name) as customer_name, p.address 
+ from air_passenger_profile p 
+ where profile_id in 
+ (select profile_id from  air_ticket_info right join air_flight 
+ on air_ticket_info.flight_id = air_flight.flight_id
+ where from_location = 'chennai' and to_location = 'hyderabad')
+  order by profile_id;
